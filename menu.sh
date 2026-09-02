@@ -33,11 +33,13 @@ while true; do
             mkdir -p "$DIRECTORIO_BASE/entrada" "$DIRECTORIO_BASE/salida" "$DIRECTORIO_BASE/procesado"
             echo "Se creó el entorno."
             ;;
+            #se tiene que copiar consolidar.sh a EPNro1 para que pueda ser ejecutado desde el menu.sh
         2)
             bash "$DIRECTORIO_BASE/consolidar.sh" &
             echo "Consolidación iniciada en segundo plano."
             ;;
-        3)
+            #se tiene que ejecutar en segundo plano consolidar.sh
+        7)
             echo "Saliendo del menú."
             exit 0
             ;;
