@@ -1,6 +1,15 @@
 #!/bin/bash
 
 BASE_DIR="$HOME/EPNro1"
+archivo_salida="$BASE_DIR/salida/${FILENAME}.txt"
+MENU="=== MENU ===
+    1. Crear entorno
+    2. Correr consolidación
+    3. Listado de alumnos ordenado por padron
+    4. Top 10 notas mas altas
+    5. Buscar alumno por padron
+    6. Ver log
+    7. Salir"
 
 if [ "$1" == "-d" ]; then 
     echo "Eliminando entorno y procesos"
@@ -18,14 +27,7 @@ fi
 # MENU
 
 while true; do
-    echo "MENU"
-    echo "1. Crear entorno"
-    echo "2. Correr consolidación"
-    echo "3. Listado de alumnos ordenado por padron"
-    echo "4. Top 10 notas mas altas"
-    echo "5. Buscar alumno por padron"
-    echo "6. Ver log"
-    echo "7. Salir"
+    echo "$MENU"
     read -p "Seleccione una opción: " opcion
 
     case $opcion in
@@ -48,11 +50,32 @@ while true; do
             ;;
 
         3)
-            archivo_salida="$BASE_DIR/salida/${FILENAME}.txt"
             if [[ -f "$archivo_salida" ]]; then
                 echo "Alumnos ordenados por padrón: "
                 sort -k1,1n "$archivo_salida"
+            else
+               echo "El $archivo_salida aún no fue creado, vuelva a seleccionar"    
             fi
+            ;;
+
+        4)
+            if [[ -f "$archivo_salida" ]]; then
+               echo "Las 10 notas más altas:"
+               sort -nr "$archivo_salida" | head -n 10
+            else
+               echo "El $archivo_salida aún no fue creado, vuelva a seleccionar"
+            fi
+           ;; 
+
+        5) 
+            read -p "Ingrese un número de padrón: " padron
+            if [[ -f "$archivo_salida" ]]; then
+               grep "^$padron" "$archivo_salida"
+            else
+               echo "El $archivo_salida aún no fue creado, vuelva a seleccionar"
+            fi
+            ;;    
+            
             
         7)
             echo "Saliendo del menú."
