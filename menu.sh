@@ -1,11 +1,11 @@
 #!/bin/bash
 
-DIRECTORIO_BASE="$HOME/EPNro1"
+BASE_DIR="$HOME/EPNro1"
 
 if [ "$1" == "-d" ]; then 
     echo "Eliminando entorno y procesos"
     pkill -f consolidar.sh 
-    rm -rf "$DIRECTORIO_BASE"/*
+    rm -rf "$BASE_DIR"/*
     exit 0
 fi
 
@@ -30,15 +30,30 @@ while true; do
 
     case $opcion in
         1)
-            mkdir -p "$DIRECTORIO_BASE/entrada" "$DIRECTORIO_BASE/salida" "$DIRECTORIO_BASE/procesado"
+            mkdir -p "$BASE_DIR/entrada" "$BASE_DIR/salida" "$BASE_DIR/procesado"
+            if [[ -f "consolidar.sh" ]]; then
+                cp consolidar.sh "$BASE_DIR/"
+                chmod +x "$BASE_DIR/consolidar.sh"
             echo "Se creó el entorno."
+            fi
             ;;
-            #se tiene que copiar consolidar.sh a EPNro1 para que pueda ser ejecutado desde el menu.sh
+            
         2)
-            bash "$DIRECTORIO_BASE/consolidar.sh" &
-            echo "Consolidación iniciada en segundo plano."
+            if pgrep -f "$BASE_DIR/consolidar.sh" > /dev/null; then
+                echo "El proceso de consolidación ya está corriendo."
+            else
+                nohup "$BASE_DIR/consolidar.sh" > /dev/null 2>&1 &
+                echo "Se inició el proceso de consolidación en segundo plano."
+            fi
             ;;
-            #se tiene que ejecutar en segundo plano consolidar.sh
+
+        3)
+            archivo_salida="$BASE_DIR/salida/${FILENAME}.txt"
+            if [[ -f "$archivo_salida" ]]; then
+                echo "Alumnos ordenados por padrón: "
+                sort -k1,1n "$archivo_salida"
+            fi
+            
         7)
             echo "Saliendo del menú."
             exit 0
