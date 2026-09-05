@@ -20,7 +20,6 @@ crear_entorno(){
         chmod +x "$BASE_DIR/consolidar.sh"
         echo "Se creó el entorno."
     fi
-    ;;
 }
 
 #2
@@ -31,7 +30,6 @@ consolidar_datos(){
         nohup "$BASE_DIR/consolidar.sh" > /dev/null 2>&1 &
         echo "Se inició el proceso de consolidación en segundo plano."
     fi
-    ;;
 }
 
 #3
@@ -42,31 +40,36 @@ ordenar_alumnos(){
     else
         echo "El $archivo_salida aún no fue creado, vuelva a seleccionar"    
     fi
-    ;;
 }
 
 #4
 ranquear_notas(){
     if [[ -f "$archivo_salida" ]]; then
         echo "Las 10 notas más altas:"
-        sort -nr "$archivo_salida" | head -n 10
+        awk '{print $NF, $0}' "$archivo_salida" | sort -nr | cut -d' ' -f2- | head -n 10
     else
         echo "El $archivo_salida aún no fue creado, vuelva a seleccionar"
     fi
-    ;; 
 }
 
 #5
 buscar_datos(){
     read -p "Ingrese un número de padrón: " padron
     if [[ -f "$archivo_salida" ]]; then
-        grep "^$padron" "$archivo_salida"
+        grep "^$padron " "$archivo_salida"
     else
         echo "El $archivo_salida aún no fue creado, vuelva a seleccionar"
-    fi
-    ;;    
+    fi    
 }
-
+#6
+ver_log(){
+    if [[ -f "$BASE_DIR/consolidar.log" ]]; then
+        echo "Contenido del log:"
+        cat "$BASE_DIR/consolidar.log"
+    else
+        echo "El archivo de log aún no fue creado."
+    fi
+}
 if [ "$1" == "-d" ]; then 
     echo "Eliminando entorno y procesos"
     pkill -f consolidar.sh 
@@ -97,6 +100,8 @@ while true; do
             
         5) buscar_datos ;;
             
+        6) ver_log ;;
+
         7)
             echo "Saliendo del menú."
             exit 0
