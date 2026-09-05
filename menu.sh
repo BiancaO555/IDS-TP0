@@ -63,11 +63,12 @@ buscar_datos(){
 }
 #6
 ver_log(){
-    if [[ -f "$BASE_DIR/consolidar.log" ]]; then
+    archivo_log="$BASE_DIR/consolidar.log"
+    if [[ -f "$archivo_log" ]]; then
         echo "Contenido del log:"
-        cat "$BASE_DIR/consolidar.log"
+        cat "$archivo_log"
     else
-        echo "El archivo de log aún no fue creado."
+        echo "El archivo de log no existe."
     fi
 }
 if [ "$1" == "-d" ]; then 
