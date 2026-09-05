@@ -63,7 +63,7 @@ buscar_datos(){
 }
 #6
 ver_log(){
-    archivo_log="$BASE_DIR/consolidar.log"
+    archivo_log="$BASE_DIR/procesado.log"
     if [[ -f "$archivo_log" ]]; then
         echo "Contenido del log:"
         cat "$archivo_log"
