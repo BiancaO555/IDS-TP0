@@ -15,6 +15,8 @@ MENU="=== MENU ===
 #1
 crear_entorno(){ 
     mkdir -p "$BASE_DIR/entrada" "$BASE_DIR/salida" "$BASE_DIR/procesado"
+    cp *.txt "$BASE_DIR/entrada/" 
+
     if [[ -f "consolidar.sh" ]]; then
         cp consolidar.sh "$BASE_DIR/"
         chmod +x "$BASE_DIR/consolidar.sh"
@@ -36,7 +38,7 @@ consolidar_datos(){
 ordenar_alumnos(){
     if [[ -f "$archivo_salida" ]]; then
         echo "Alumnos ordenados por padrón: "
-        sort -k1,1n "$archivo_salida"
+        sort -n -k1,1 "$archivo_salida"
     else
         echo "El $archivo_salida aún no fue creado, vuelva a seleccionar"    
     fi
@@ -71,6 +73,8 @@ ver_log(){
         echo "El archivo de log no existe."
     fi
 }
+
+# PARÁMETRO OPTATIVO
 if [ "$1" == "-d" ]; then 
     echo "Eliminando entorno y procesos"
     pkill -f consolidar.sh 
@@ -78,6 +82,7 @@ if [ "$1" == "-d" ]; then
     exit 0
 fi
 
+# VALIDACIÓN
 if [[ -z "$FILENAME" ]]; then 
     echo "Error: La variable de entorno FILENAME no está definida."
     echo "Ejecute export FILENAME=nombre_archivo"
@@ -105,6 +110,7 @@ while true; do
 
         7)
             echo "Saliendo del menú."
+            pkill -f "consolidar.sh"
             exit 0
             ;;
         *)
