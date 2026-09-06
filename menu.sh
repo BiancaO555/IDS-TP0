@@ -74,6 +74,13 @@ ver_log(){
     fi
 }
 
+#7
+salir(){
+    echo "Saliendo del menú."
+    pkill -f "consolidar.sh"
+    exit 0
+}
+
 # PARÁMETRO OPTATIVO
 if [ "$1" == "-d" ]; then 
     echo "Eliminando entorno y procesos"
@@ -96,23 +103,13 @@ while true; do
     read -p "Seleccione una opción: " opcion
 
     case $opcion in
-        1) crear_entorno ;;
-            
-        2) consolidar_datos ;;
-            
-        3) ordenar_alumnos ;;
-            
-        4) ranquear_notas ;;
-            
+        1) crear_entorno ;;    
+        2) consolidar_datos ;;  
+        3) ordenar_alumnos ;;    
+        4) ranquear_notas ;;   
         5) buscar_datos ;;
-            
         6) ver_log ;;
-
-        7)
-            echo "Saliendo del menú."
-            pkill -f "consolidar.sh"
-            exit 0
-            ;;
+        7) salir ;;
         *)
             echo "Opción inválida. Intente nuevamente."
             ;;
