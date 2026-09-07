@@ -2,7 +2,7 @@
 
 BASE_DIR="$HOME/EPNro1"
 archivo_salida="$BASE_DIR/salida/${FILENAME}.txt"
-MENU="========== MENU ==========
+MENU="================== MENÚ ==================
     1. Crear entorno
     2. Correr consolidación
     3. Listado de alumnos ordenado por padron
