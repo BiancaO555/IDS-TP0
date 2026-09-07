@@ -15,7 +15,6 @@ MENU="=== MENU ===
 #1
 crear_entorno(){ 
     mkdir -p "$BASE_DIR/entrada" "$BASE_DIR/salida" "$BASE_DIR/procesado"
-    cp *.txt "$BASE_DIR/entrada/" 
 
     if [[ -f "consolidar.sh" ]]; then
         cp consolidar.sh "$BASE_DIR/"
@@ -58,7 +57,12 @@ ranquear_notas(){
 buscar_datos(){
     read -p "Ingrese un número de padrón: " padron
     if [[ -f "$archivo_salida" ]]; then
-        grep "^$padron " "$archivo_salida"
+
+        if grep -q "^$padron " "$archivo_salida"; then
+           grep "^$padron " "$archivo_salida" | uniq
+        else 
+          echo "El padrón $padron no existe."
+        fi
     else
         echo "El $archivo_salida aún no fue creado, vuelva a seleccionar"
     fi    
@@ -77,7 +81,6 @@ ver_log(){
 #7
 salir(){
     echo "Saliendo del menú."
-    pkill -f "consolidar.sh"
     exit 0
 }
 
@@ -115,8 +118,3 @@ while true; do
             ;;
     esac
 done
-
-    
-     
-
-
